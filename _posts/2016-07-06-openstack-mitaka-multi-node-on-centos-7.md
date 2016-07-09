@@ -7,7 +7,7 @@ tags: []
 ---
 {% include JB/setup %}
 
-![](https://cloud.githubusercontent.com/assets/10396579/16708625/20640a76-4618-11e6-93fd-bea99bdc4f6c.jpg)
+<img src="https://cloud.githubusercontent.com/assets/10396579/16709212/d1daa63e-4627-11e6-8a91-6144c614aeeb.jpg" width="930">
 
 OpenStack setup without the aid of a deployment tool can be a damper for people taking their baby steps in to the world of OpenStack. There are multiple options available in OpenStack today for this kind of setup like Devstack, Packstack which make it easier to setup OpenStack.
 
