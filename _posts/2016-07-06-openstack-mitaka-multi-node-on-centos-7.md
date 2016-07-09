@@ -308,10 +308,9 @@ The following tasks were performed as a part of initial configuration.
 
 *Delete existing network and routers*
 
-![](https://cloud.githubusercontent.com/assets/10396579/16553155/2ceebd0a-41e4-11e6-97e4-0ec151952fb5.png)
+<img src="https://cloud.githubusercontent.com/assets/10396579/16553155/2ceebd0a-41e4-11e6-97e4-0ec151952fb5.png" width="930">
 
-
-![](https://cloud.githubusercontent.com/assets/10396579/16553031/2b4d7884-41e3-11e6-8cc1-bbcf55b0f4b9.png)
+<img src="https://cloud.githubusercontent.com/assets/10396579/16553031/2b4d7884-41e3-11e6-8cc1-bbcf55b0f4b9.png" width="930">
 
 *Create new Public Network*
 
@@ -333,7 +332,7 @@ I have assigned a subgroup of IP from VLAN 150 to the public Sidney. This will b
 
 *Create new Private Network*
 
-![](https://cloud.githubusercontent.com/assets/10396579/16553686/a35b2afc-41e7-11e6-8908-960cf9de43d9.png)
+<img src="https://cloud.githubusercontent.com/assets/10396579/16553686/a35b2afc-41e7-11e6-8908-960cf9de43d9.png" width="930">
 
 *Create Private Subnet*
 
