@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "OpenStack Mitaka Multi Node on CentOS 7"
+title: "OpenStack Mitaka Multi Node on CentOS 7: Part 1"
 description: "Setup OpenStack Mitaka Multi-Node on CentOS 7"
 category: "OpenStack"
 tags: []
@@ -415,6 +415,9 @@ Once the instance is up and running. You should be able to login with the floati
 
 	$ ssh -l CentOS -i <pem _key> <floating_ip>
 
+## Part 2
+
+In Part 2 of this blog we will explore how to add a Second Compute node
 
 ## Further Reading
 
