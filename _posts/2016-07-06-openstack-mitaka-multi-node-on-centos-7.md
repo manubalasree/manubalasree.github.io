@@ -352,7 +352,7 @@ From **Project** -> **Access and Security** -> **Security** **Groups** Select de
 
 Configure the group to look like this.
 
-<img src="https://cloud.githubusercontent.com/assets/10396579/16556538/4154f34a-41f8-11e6-8b78-fadde418c911.png" width="830" align="center">
+<img src="https://cloud.githubusercontent.com/assets/10396579/16556538/4154f34a-41f8-11e6-8b78-fadde418c911.png" width="830">
 
 *Create a Key Pair*
 
