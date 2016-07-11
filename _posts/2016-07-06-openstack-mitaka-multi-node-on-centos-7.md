@@ -7,7 +7,7 @@ tags: []
 ---
 {% include JB/setup %}
 
-<img src="https://cloud.githubusercontent.com/assets/10396579/16709212/d1daa63e-4627-11e6-8a91-6144c614aeeb.jpg" width="930">
+<img align="center" src="https://cloud.githubusercontent.com/assets/10396579/16709212/d1daa63e-4627-11e6-8a91-6144c614aeeb.jpg" width="830">
 
 OpenStack setup without the aid of a deployment tool can be a damper for people taking their baby steps in to the world of OpenStack. There are multiple options available in OpenStack today for this kind of setup like Devstack, Packstack which make it easier to setup OpenStack.
 
@@ -98,7 +98,7 @@ This is used by hosts to communicate with external network routed through the Ne
 
 #### Server configuration (repeat this on all nodes)
 
-*Update OS to latest*  
+*Update OS to latest*
 
 	$ yum update
 
@@ -110,7 +110,7 @@ This is used by hosts to communicate with external network routed through the Ne
 
 *Set* *Hostname*
 
-	systemctl set-hostname		
+	systemctl set-hostname
 
 *Disable* *selinux*
 
@@ -166,7 +166,7 @@ This is used by hosts to communicate with external network routed through the Ne
 
 *Configure Chrony NTP for server and clients*
 
-- Server (	Controller Node)
+**Server (Controller Node)**
 
 		$ chkconfig ntp off
 		$ yum remove ntp
@@ -302,15 +302,15 @@ The following tasks were performed as a part of initial configuration.
 
 ![login_screen](https://cloud.githubusercontent.com/assets/10396579/16363915/e0b6b4c6-3bf6-11e6-9240-6c9643ee2480.png)
 
-*Source /root/keystonerc_admin file*  
+*Source /root/keystonerc_admin file*
 
 	$ . /root/keystonerc_admin
 
 *Delete existing network and routers*
 
-<img src="https://cloud.githubusercontent.com/assets/10396579/16553155/2ceebd0a-41e4-11e6-97e4-0ec151952fb5.png" width="930">
+<img src="https://cloud.githubusercontent.com/assets/10396579/16553155/2ceebd0a-41e4-11e6-97e4-0ec151952fb5.png" width="830" align="center">
 
-<img src="https://cloud.githubusercontent.com/assets/10396579/16553031/2b4d7884-41e3-11e6-8cc1-bbcf55b0f4b9.png" width="930">
+<img src="https://cloud.githubusercontent.com/assets/10396579/16553031/2b4d7884-41e3-11e6-8cc1-bbcf55b0f4b9.png" width="830" align="center">
 
 *Create new Public Network*
 
@@ -332,7 +332,7 @@ I have assigned a subgroup of IP from VLAN 150 to the public Sidney. This will b
 
 *Create new Private Network*
 
-<img src="https://cloud.githubusercontent.com/assets/10396579/16553686/a35b2afc-41e7-11e6-8908-960cf9de43d9.png" width="930">
+<img src="https://cloud.githubusercontent.com/assets/10396579/16553686/a35b2afc-41e7-11e6-8908-960cf9de43d9.png" width="830" align="center">
 
 *Create Private Subnet*
 
@@ -352,7 +352,7 @@ From **Project** -> **Access and Security** -> **Security** **Groups** Select de
 
 Configure the group to look like this.
 
-![security_group](https://cloud.githubusercontent.com/assets/10396579/16556538/4154f34a-41f8-11e6-8b78-fadde418c911.png)
+<img src="https://cloud.githubusercontent.com/assets/10396579/16556538/4154f34a-41f8-11e6-8b78-fadde418c911.png" width="830" align="center">
 
 *Create a Key Pair*
 
