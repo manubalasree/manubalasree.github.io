@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+        <title>Manu Balasree's Blog</title>
+        <description>Manu Balasree's Blog - Manu Balasree</description>
+        <link>http://manubalasree.github.io</link>
+        <atom:link href="http://manubalasree.github.io/rss.xml" rel="self" type="application/rss+xml" />
+        <lastBuildDate>2016-08-13 18:56:19 +0530</lastBuildDate>
+        <pubDate>2016-08-13 18:56:19 +0530</pubDate>
+        <ttl>60</ttl>
+
+
+        <item>
+                <title>OpenStack Mitaka Multi Node on CentOS 7: Part 1</title>
+                <description>&lt;img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16709212/d1daa63e-4627-11e6-8a91-6144c614aeeb.jpg' width='830' /&gt;
+&lt;p&gt;OpenStack setup without the aid of a deployment tool can be a damper for people taking their baby steps in to the world of OpenStack. There are multiple options available in OpenStack today for this kind of setup like Devstack, Packstack which make it easier to setup OpenStack.&lt;/p&gt;
+
+&lt;h1 id='rdo_and_packstack'&gt;RDO and Packstack&lt;/h1&gt;
+
+&lt;p&gt;In this blog I would like share my experience deploying a multi-node OpenStack PoC (Proof of Concept) setup using RDO and Packstack.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;RDO&lt;/strong&gt; is simply a distribution of OpenStack for Red Hat Enterprise Linux (RHEL), Fedora and derivatives (e.g.: CentOS).&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;PackStack&lt;/strong&gt; is a Puppet based tool that simplifies the deployment of RDO.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Most of the documentation about RDO and PackStack was related to all-in-one setup which lets you setup OpenStack on a single machine Physical or Virtual.&lt;/p&gt;
+
+&lt;p&gt;All right, lets get started with a description of OpenStack Mitaka components we are going to setup.&lt;/p&gt;
+
+&lt;h2 id='controller'&gt;Controller&lt;/h2&gt;
+
+&lt;p&gt;The Controller node is where most of the shared OpenStack services and other tools run. The Controller node supplies API, scheduling, and other shared services for the cloud. The Controller node has the dashboard, the image store, and the identity service. Additionally, Nova compute management service as well as the Neutron server are also configured in this node.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;System Requirements
+1  GB Ram
+30 GB HDD
+
+Networking - Single NIC card
+Management (eth0)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='networking'&gt;Networking&lt;/h2&gt;
+
+&lt;p&gt;The Network node provides virtual networking and networking services to Nova instances using the Neutron Layer 3 and DHCP network services.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;System Requirements
+1  GB Ram
+30 GB HDD
+
+Networking - Three NIC card
+Management (eth0)
+Guest Data (eth1)
+External Network (eth2)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='compute'&gt;Compute&lt;/h2&gt;
+
+&lt;p&gt;The Compute node is where the VM instances (Nova compute instances) are installed. The VM instances use iSCSI targets provisioned by the Cinder volume service. There are multiple options for compute node like KVM, Hyper-v and even docker. KVM was used in this particular case.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;System Requirements
+4  GB Ram
+60 GB HDD (excluding OS)
+
+Networking - Two NIC card
+Management (eth0)
+Guest Data (eth1)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='networking'&gt;Networking&lt;/h2&gt;
+
+&lt;p&gt;Few words on networking. Although there are many other options available for networking, OVS was considered for this setup. Ideally &lt;strong&gt;Management network should be isolated from the rest of the Network for security purposes&lt;/strong&gt;. This being a PoC setup all the networking was done on a single VLAN although they are physically separated.&lt;/p&gt;
+
+&lt;h4 id='management_eth0_on_all_hosts'&gt;Management (eth0 on all hosts)&lt;/h4&gt;
+
+&lt;p&gt;This network is used for management only.&lt;/p&gt;
+
+&lt;h4 id='guest_data_eth1_on_all_hosts'&gt;Guest data (eth1 on all hosts)&lt;/h4&gt;
+
+&lt;p&gt;This is used by guests to communicate with each other. We will be using a single VLAN for this PoC.&lt;/p&gt;
+
+&lt;h4 id='public_eth2_on_all_hosts'&gt;Public (eth2 on all hosts)&lt;/h4&gt;
+
+&lt;p&gt;This is used by hosts to communicate with external network routed through the Network node. External hosts will be able to reach the guests(instances) on the basis of external ip and security groups.&lt;/p&gt;
+
+&lt;h2 id='host_configuration'&gt;Host configuration&lt;/h2&gt;
+
+&lt;h4 id='server_hostname'&gt;Server Hostname&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;stack-pocbox-controller&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;stack-pocbox-network&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;stack-pocbox-compute&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id='network'&gt;Network&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;This being a PoC setup all the networking was done on a
+single VLAN although they are physically separated.
+VLAN 150
+172.21.64.1 - 172.21.67.254
+172.21.64.0/22&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt; You can use any Network Subnet or VLAN ID as per your requirement.&lt;/p&gt;
+
+&lt;h4 id='operating_system'&gt;Operating System&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;CentOS 7&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id='server_configuration_repeat_this_on_all_nodes'&gt;Server configuration (repeat this on all nodes)&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;Update OS to latest&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ yum update&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Disable&lt;/em&gt; &lt;em&gt;FirewallD&lt;/em&gt;, &lt;em&gt;NetworkManager&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ systemctl disable Firewalld
+$ systemctl disable NetworkManager
+$ systemctl mask Firewalld&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Set&lt;/em&gt; &lt;em&gt;Hostname&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;systemctl set-hostname&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Disable&lt;/em&gt; &lt;em&gt;selinux&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/etc/sysconfig/selinux
+set to “permissive”&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Enable iptables&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ yum install iptables-services
+$ systemctl enable iptables&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Create&lt;/em&gt; &lt;em&gt;hosts&lt;/em&gt; &lt;em&gt;file&lt;/em&gt; &lt;em&gt;and&lt;/em&gt; &lt;em&gt;copy&lt;/em&gt; &lt;em&gt;this&lt;/em&gt; &lt;em&gt;to&lt;/em&gt; &lt;em&gt;all&lt;/em&gt; &lt;em&gt;hosts&lt;/em&gt; &lt;strong&gt;Note&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Management (eth0) ip is used for hostname on the nodes&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;Static IP&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;I prefer updating /etc/hosts even though i have a working DNS&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+172.21.64.1 stack-pocbox-controller.local stack-pocbox-controller
+172.21.64.2 stack-pocbox-network.local stack-pocbox-network
+172.21.64.5 stack-pocbox-compute.local stack-pocbox-compute&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;If you are using non-English locale make sure your /etc/environment is populated:&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;LANG=en_US.utf-8
+LC_ALL=en_US.utf-8&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Network Configuration&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Repeat the same for eth0, eth1 and eth2 on all the nodes&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cat /etc/sysconfig/network-scripts/ifcfg-eth0
+TYPE=&amp;quot;Ethernet&amp;quot;
+BOOTPROTO=&amp;quot;static&amp;quot;
+DEFROUTE=&amp;quot;yes&amp;quot;
+PEERDNS=&amp;quot;yes&amp;quot;
+PEERROUTES=&amp;quot;yes&amp;quot;
+IPV4_FAILURE_FATAL=&amp;quot;no&amp;quot;
+IPV6INIT=&amp;quot;no&amp;quot;
+NAME=&amp;quot;eth0&amp;quot;
+UUID=&amp;quot;9c31d94b-d0d1-45bc-90c3-3c2bfb6c166b&amp;quot;
+DEVICE=&amp;quot;eth0&amp;quot;
+ONBOOT=&amp;quot;yes&amp;quot;
+IPADDR=172.21.64.1
+NETMASK=255.255.252.0
+GATEWAY=172.21.67.254
+DOMAIN=&amp;quot;bedford.progress.com&amp;quot;
+DNS1=172.21.33.253
+DNS2=172.21.33.253&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Configure Chrony NTP for server and clients&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Server (Controller Node)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	$ chkconfig ntp off
+	$ yum remove ntp
+	$ yum install chrony
+	Open chrony.conf and replace ‘allow &amp;lt;IP/CIDR&amp;gt;’ with your Management network&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Enable chrony&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;	$ systemctl enable chronyd.service
+	$ systemctl start chronyd.service
+	$ systemctl restart chronyd.service&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Reboot&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;init 6&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='install_openstack'&gt;Install OpenStack&lt;/h2&gt;
+
+&lt;h4 id='install_packstack_controller_node'&gt;Install PackStack (Controller Node)&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;$ sudo yum install -y centos-release-openstack-mitaka
+$ sudo yum update -y
+$ sudo yum install -y openstack-packstack&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Generate answer file (Controller Node)&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ packstack --gen-answer-file=packstack_answers.conf&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Modify answer file to change ip address of Network and Compute node&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CONFIG_COMPUTE_HOSTS=172.21.64.5
+CONFIG_NETWORK_HOSTS=172.21.64.2&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Answer is already populated with random passwords for all your services, change them as required&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;(Optional) I choose to install&lt;/em&gt;&lt;em&gt;Heat&lt;/em&gt;* as well*&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;CONFIG_HEAT_INSTALL=y&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Install openstack&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ packstack --answer-file=packstack_answers.conf&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Once install is successful you will see a screen similar to this&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;*** Installation completed successfully ***
+
+Additional information:
+ * Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.
+ * File /root/keystonerc_admin has been created on OpenStack client host 172.21.64.1. To use the command line tools you need to source the file.
+ * To access the OpenStack Dashboard browse to http://172.21.64.1/dashboard .
+Please, find your login credentials stored in the keystonerc_admin in your home directory.
+ * To use Nagios, browse to http://172.21.64.1/nagios username: nagiosadmin, password: 8908d16396354aa4
+ * The installation log file is available at: /var/tmp/packstack/20160621-160219-uCI8ju/openstack-setup.log
+ * The generated manifests are available at: /var/tmp/packstack/20160621-160219-uCI8ju/manifests&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Open Horizon Dashboard&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://172.21.64.1/dashboard
+The root password setup by PackStack script is available in /root/keystonerc_admin&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Source /root/keystonerc_admin file&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ . /root/keystonerc_admin&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='configure_openstack'&gt;Configure OpenStack&lt;/h2&gt;
+
+&lt;p&gt;The following tasks were performed as a part of initial configuration.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Network Configuration&lt;/li&gt;
+
+&lt;li&gt;Clean up default network created by PackStack script&lt;/li&gt;
+
+&lt;li&gt;Create new Public, Private network and its subnet&lt;/li&gt;
+
+&lt;li&gt;Create a new router&lt;/li&gt;
+
+&lt;li&gt;Upload a CentOS qcow2 image&lt;/li&gt;
+
+&lt;li&gt;Create a Key pair&lt;/li&gt;
+
+&lt;li&gt;Configure Security Group&lt;/li&gt;
+
+&lt;li&gt;Deploy an instance from CentOS image&lt;/li&gt;
+
+&lt;li&gt;Attach floating IP&lt;/li&gt;
+
+&lt;li&gt;Login to instance&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id='network_configuration_network_node'&gt;Network Configuration (Network Node)&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ovs-vsctl show
+Bridge &amp;quot;br-eth1”
+    Port &amp;quot;br-eth1”
+        Interface &amp;quot;br-eth1”
+            type: internal
+    Port “eth1”
+        Interface “eth1”
+Bridge br-int
+    fail_mode: secure
+    Port br-int
+        Interface br-int
+            type: internal
+    Port patch-tun
+        Interface patch-tun
+            type: patch
+            options: {peer=patch-int}
+    Port &amp;quot;tap15df1b42-06&amp;quot;
+        tag: 1
+        Interface &amp;quot;tap15df1b42-06&amp;quot;
+            type: internal
+    Port &amp;quot;qr-494def92-bc&amp;quot;
+        tag: 1
+        Interface &amp;quot;qr-494def92-bc&amp;quot;
+            type: internal
+Bridge br-ex
+    Port “eth2”&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Note that eth1 is a port on Bridge br-eth1 and eth2 is a port on Bridge br-ex. This would be missing in your Network node at this point. Let’s go ahead and add this.&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Networking
+	Management (eth0)
+	Guest Data (eth1)
+	External Network (eth2)
+
+$ ovs-vsctl add-br br-eth1
+$ ovs-vsctl add-port br-eth1 eth1
+$ ovs-vsctl add-port br-ex eth2&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Repeat the steps for Compute Node&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ovs-vsctl add-br br-eth1
+$ ovs-vsctl add-port br-eth1 eth1&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id='clean_up_default_network_created_by_packstack_script'&gt;Clean up default network created by PackStack script&lt;/h4&gt;
+
+&lt;p&gt;&lt;em&gt;Open Horizon Dashboard&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://172.21.64.1/dashboard
+The admin password setup by PackStack script is available in /root/keystonerc_admin&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img alt='login_screen' src='https://cloud.githubusercontent.com/assets/10396579/16363915/e0b6b4c6-3bf6-11e6-9240-6c9643ee2480.png' /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Source /root/keystonerc_admin file&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ . /root/keystonerc_admin&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Delete existing network and routers&lt;/em&gt;&lt;/p&gt;
+&lt;img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16553155/2ceebd0a-41e4-11e6-97e4-0ec151952fb5.png' width='830' /&gt;&lt;img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16553031/2b4d7884-41e3-11e6-8cc1-bbcf55b0f4b9.png' width='830' /&gt;
+&lt;p&gt;&lt;em&gt;Create new Public Network&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;This network will have access to the outside (&lt;strong&gt;external&lt;/strong&gt;) network. I am using the same as VLAN 150 mentioned before. The public-subnet(more about this in a moment) will be created by using a subgroup of ip’s from the 172.21.64.0/22 subnet.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16553291/60c7ab72-41e5-11e6-8d1e-6cc31a553666.png' /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Create Public Subnet&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;I have assigned a subgroup of IP from VLAN 150 to the public Sidney. This will be used by OpenStack to assign elastic IP for the VM&amp;#8217;s&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16553495/a306e150-41e6-11e6-8650-9424e2c91939.png' /&gt; &lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16553498/a501ac88-41e6-11e6-8699-d6f559cba881.png' /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Note that DNS server although a different subnet is routable on VLAN 150 and this is done on the network side.
+
+Ideally the external Network should be able to reach Internet. This needs to be configured on the network end&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Create new Private Network&lt;/em&gt;&lt;/p&gt;
+&lt;img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16553686/a35b2afc-41e7-11e6-8908-960cf9de43d9.png' width='830' /&gt;
+&lt;p&gt;&lt;em&gt;Create Private Subnet&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;You can choose a Private IP range appropriate to your organisation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16555338/c91efa3e-41f1-11e6-82a9-68dfa3d6fd53.png' /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16555339/c9e14968-41f1-11e6-9450-191258d3db0d.png' /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Configure Security Group&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Note: The following security group configuration was done with PoC in mind. DO NOT USE THIS FOR PRODUCTION&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will create a security group that will allow all Incoming and Outgoing traffic.&lt;/p&gt;
+
+&lt;p&gt;From &lt;strong&gt;Project&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Access and Security&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Security&lt;/strong&gt; &lt;strong&gt;Groups&lt;/strong&gt; Select default and click on Manage rules.&lt;/p&gt;
+
+&lt;p&gt;Configure the group to look like this.&lt;/p&gt;
+&lt;img src='https://cloud.githubusercontent.com/assets/10396579/16556538/4154f34a-41f8-11e6-8b78-fadde418c911.png' width='830' /&gt;
+&lt;p&gt;&lt;em&gt;Create a Key Pair&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;From &lt;strong&gt;Project&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Access and Security&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Key&lt;/strong&gt; &lt;strong&gt;Pairs&lt;/strong&gt; select &lt;strong&gt;+Create Key Pair&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Download the .pem file for later use&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;You can also create your own RSA key and upload if you prefer doing so&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Upload CentOS 7 image&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The default Cirros image does not do much.Lets upload create a CentOS image for creating our first instance.&lt;/p&gt;
+
+&lt;p&gt;Copy the url CentOS latest version ISO image from &lt;a href='http://cloud.centos.org/centos/7/images/'&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Copy the ISO url.There is no need to download the ISO Image.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From &lt;strong&gt;Admin&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Images&lt;/strong&gt; select &lt;strong&gt;Create Image&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Paste the URL in to the field for &lt;strong&gt;Image Location&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;(https://cloud.githubusercontent.com/assets/10396579/16555562/0460c1b2-41f3-11e6-9b0a-e05855e02819.png)&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Launch instance and attach floating ip&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that we uploaded a CentOS image. Let&amp;#8217;s go ahead and Launch Instance and attach a floating IP&lt;/p&gt;
+
+&lt;p&gt;From &lt;strong&gt;Project&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Instances&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Launch&lt;/strong&gt; &lt;strong&gt;Instance&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- Details
+		Provide Instance name(Leave rest to defaults)
+- Source
+		Select the CentOS image that was created
+- Flavour
+		Select Flavour(depending on the compute instance)
+- Networks
+		Select &amp;quot;Private Network&amp;quot;
+- Network Ports
+		Leave default
+- Security Groups
+		Select &amp;quot;default&amp;quot; security group that was configured
+- Key pair
+		Select the key pair that created(Might be the only option unless you have created multiple&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Launch&lt;/strong&gt; &lt;strong&gt;Instance&lt;/strong&gt; to create instance.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Attach floating IP&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;From &lt;strong&gt;Project&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Instances&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Instance&lt;/strong&gt; &lt;strong&gt;Name&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Action&lt;/strong&gt; drop down select &lt;strong&gt;Associate&lt;/strong&gt; &lt;strong&gt;Floating&lt;/strong&gt; &lt;strong&gt;IP&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16556720/37fd6e0c-41f9-11e6-9a84-7127b3d423a3.png' /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16556726/398e842c-41f9-11e6-88bf-b2949a5bfe9d.png' /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Login to instance&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the instance is up and running. You should be able to login with the floating IP assigned.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16556897/3d7a1f28-41fa-11e6-82b0-a3fda88a208e.png' /&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ssh -l CentOS -i &amp;lt;pem _key&amp;gt; &amp;lt;floating_ip&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='part_2'&gt;Part 2&lt;/h2&gt;
+
+&lt;p&gt;In Part 2 of this blog we will explore how to add a Second Compute node&lt;/p&gt;
+
+&lt;h2 id='further_reading'&gt;Further Reading&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href='https://anturis.com/blog/openstack-the-essential-guide/'&gt;Openstack essential Guide&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href='https://cloudbase.it/rdo-multi-node/'&gt;RDO multinode&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href='https://www.youtube.com/watch?v=eOlIB323c8s'&gt;RDO multinode a very useful Youtube video by Seth Jennings&lt;/a&gt;&lt;/p&gt;</description>
+                <link>http://manubalasree.github.io/OpenStack/2016/07/06/openstack-mitaka-multi-node-on-centos-7</link>
+                <guid>http://manubalasree.github.io/OpenStack/2016/07/06/openstack-mitaka-multi-node-on-centos-7</guid>
+                <pubDate>2016-07-06 00:00:00 +0530</pubDate>
+        </item>
+
+
+</channel>
+</rss>

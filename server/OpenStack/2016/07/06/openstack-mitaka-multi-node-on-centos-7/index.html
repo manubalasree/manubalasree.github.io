@@ -1,0 +1,685 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>OpenStack Mitaka Multi Node on CentOS 7: Part 1</title>
+    <meta name="description" content="Setup OpenStack Mitaka Multi-Node on CentOS 7">
+    <meta name="author" content="Manu Balasree">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap styles -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional theme -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Sticky Footer -->
+    <link href="/assets/themes/bootstrap-3/bootstrap/css/bs-sticky-footer.css" rel="stylesheet">
+    
+    <!-- Custom styles -->
+    <link href="/assets/themes/bootstrap-3/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!-- Update these with your own images
+      <link rel="shortcut icon" href="images/favicon.ico">
+      <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+      <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+      <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div id="wrap">
+      <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Manu Balasree's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="jb-navbar-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+
+
+
+          </ul>
+          <form class="navbar-form navbar-right" role="search">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        </div><!-- /.navbar-collapse -->
+      </nav>
+
+      <div class="container">
+        
+
+<div class="page-header">
+  <h1>OpenStack Mitaka Multi Node on CentOS 7: Part 1 </h1>
+</div>
+
+<div class="row post-full">
+  <div class="col-xs-12">
+    <div class="date">
+      <span>06 July 2016</span>
+    </div>
+    <div class="content">
+      <img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16709212/d1daa63e-4627-11e6-8a91-6144c614aeeb.jpg' width='830' />
+<p>OpenStack setup without the aid of a deployment tool can be a damper for people taking their baby steps in to the world of OpenStack. There are multiple options available in OpenStack today for this kind of setup like Devstack, Packstack which make it easier to setup OpenStack.</p>
+
+<h1 id='rdo_and_packstack'>RDO and Packstack</h1>
+
+<p>In this blog I would like share my experience deploying a multi-node OpenStack PoC (Proof of Concept) setup using RDO and Packstack.</p>
+
+<ul>
+<li>
+<p><strong>RDO</strong> is simply a distribution of OpenStack for Red Hat Enterprise Linux (RHEL), Fedora and derivatives (e.g.: CentOS).</p>
+</li>
+
+<li>
+<p><strong>PackStack</strong> is a Puppet based tool that simplifies the deployment of RDO.</p>
+</li>
+</ul>
+
+<p>Most of the documentation about RDO and PackStack was related to all-in-one setup which lets you setup OpenStack on a single machine Physical or Virtual.</p>
+
+<p>All right, lets get started with a description of OpenStack Mitaka components we are going to setup.</p>
+
+<h2 id='controller'>Controller</h2>
+
+<p>The Controller node is where most of the shared OpenStack services and other tools run. The Controller node supplies API, scheduling, and other shared services for the cloud. The Controller node has the dashboard, the image store, and the identity service. Additionally, Nova compute management service as well as the Neutron server are also configured in this node.</p>
+
+<pre><code>System Requirements
+1  GB Ram
+30 GB HDD
+
+Networking - Single NIC card
+Management (eth0)</code></pre>
+
+<h2 id='networking'>Networking</h2>
+
+<p>The Network node provides virtual networking and networking services to Nova instances using the Neutron Layer 3 and DHCP network services.</p>
+
+<pre><code>System Requirements
+1  GB Ram
+30 GB HDD
+
+Networking - Three NIC card
+Management (eth0)
+Guest Data (eth1)
+External Network (eth2)</code></pre>
+
+<h2 id='compute'>Compute</h2>
+
+<p>The Compute node is where the VM instances (Nova compute instances) are installed. The VM instances use iSCSI targets provisioned by the Cinder volume service. There are multiple options for compute node like KVM, Hyper-v and even docker. KVM was used in this particular case.</p>
+
+<pre><code>System Requirements
+4  GB Ram
+60 GB HDD (excluding OS)
+
+Networking - Two NIC card
+Management (eth0)
+Guest Data (eth1)</code></pre>
+
+<h2 id='networking'>Networking</h2>
+
+<p>Few words on networking. Although there are many other options available for networking, OVS was considered for this setup. Ideally <strong>Management network should be isolated from the rest of the Network for security purposes</strong>. This being a PoC setup all the networking was done on a single VLAN although they are physically separated.</p>
+
+<h4 id='management_eth0_on_all_hosts'>Management (eth0 on all hosts)</h4>
+
+<p>This network is used for management only.</p>
+
+<h4 id='guest_data_eth1_on_all_hosts'>Guest data (eth1 on all hosts)</h4>
+
+<p>This is used by guests to communicate with each other. We will be using a single VLAN for this PoC.</p>
+
+<h4 id='public_eth2_on_all_hosts'>Public (eth2 on all hosts)</h4>
+
+<p>This is used by hosts to communicate with external network routed through the Network node. External hosts will be able to reach the guests(instances) on the basis of external ip and security groups.</p>
+
+<h2 id='host_configuration'>Host configuration</h2>
+
+<h4 id='server_hostname'>Server Hostname</h4>
+
+<ul>
+<li>
+<p>stack-pocbox-controller</p>
+</li>
+
+<li>
+<p>stack-pocbox-network</p>
+</li>
+
+<li>
+<p>stack-pocbox-compute</p>
+</li>
+</ul>
+
+<h4 id='network'>Network</h4>
+
+<pre><code>This being a PoC setup all the networking was done on a
+single VLAN although they are physically separated.
+VLAN 150
+172.21.64.1 - 172.21.67.254
+172.21.64.0/22</code></pre>
+
+<p><strong>Note</strong> You can use any Network Subnet or VLAN ID as per your requirement.</p>
+
+<h4 id='operating_system'>Operating System</h4>
+
+<pre><code>CentOS 7</code></pre>
+
+<h4 id='server_configuration_repeat_this_on_all_nodes'>Server configuration (repeat this on all nodes)</h4>
+
+<p><em>Update OS to latest</em></p>
+
+<pre><code>$ yum update</code></pre>
+
+<p><em>Disable</em> <em>FirewallD</em>, <em>NetworkManager</em>:</p>
+
+<pre><code>$ systemctl disable Firewalld
+$ systemctl disable NetworkManager
+$ systemctl mask Firewalld</code></pre>
+
+<p><em>Set</em> <em>Hostname</em></p>
+
+<pre><code>systemctl set-hostname</code></pre>
+
+<p><em>Disable</em> <em>selinux</em></p>
+
+<pre><code>/etc/sysconfig/selinux
+set to “permissive”</code></pre>
+
+<p><em>Enable iptables</em></p>
+
+<pre><code>$ yum install iptables-services
+$ systemctl enable iptables</code></pre>
+
+<p><em>Create</em> <em>hosts</em> <em>file</em> <em>and</em> <em>copy</em> <em>this</em> <em>to</em> <em>all</em> <em>hosts</em> <strong>Note</strong></p>
+
+<ul>
+<li>
+<p>Management (eth0) ip is used for hostname on the nodes</p>
+</li>
+
+<li>
+<p>Static IP</p>
+</li>
+
+<li>
+<p>I prefer updating /etc/hosts even though i have a working DNS</p>
+
+<pre><code> cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+172.21.64.1 stack-pocbox-controller.local stack-pocbox-controller
+172.21.64.2 stack-pocbox-network.local stack-pocbox-network
+172.21.64.5 stack-pocbox-compute.local stack-pocbox-compute</code></pre>
+</li>
+</ul>
+
+<p><em>If you are using non-English locale make sure your /etc/environment is populated:</em></p>
+
+<pre><code>LANG=en_US.utf-8
+LC_ALL=en_US.utf-8</code></pre>
+
+<p><em>Network Configuration</em></p>
+
+<p><strong><em>Repeat the same for eth0, eth1 and eth2 on all the nodes</em></strong></p>
+
+<pre><code>cat /etc/sysconfig/network-scripts/ifcfg-eth0
+TYPE=&quot;Ethernet&quot;
+BOOTPROTO=&quot;static&quot;
+DEFROUTE=&quot;yes&quot;
+PEERDNS=&quot;yes&quot;
+PEERROUTES=&quot;yes&quot;
+IPV4_FAILURE_FATAL=&quot;no&quot;
+IPV6INIT=&quot;no&quot;
+NAME=&quot;eth0&quot;
+UUID=&quot;9c31d94b-d0d1-45bc-90c3-3c2bfb6c166b&quot;
+DEVICE=&quot;eth0&quot;
+ONBOOT=&quot;yes&quot;
+IPADDR=172.21.64.1
+NETMASK=255.255.252.0
+GATEWAY=172.21.67.254
+DOMAIN=&quot;bedford.progress.com&quot;
+DNS1=172.21.33.253
+DNS2=172.21.33.253</code></pre>
+
+<p><em>Configure Chrony NTP for server and clients</em></p>
+
+<p><strong>Server (Controller Node)</strong></p>
+
+<pre><code>	$ chkconfig ntp off
+	$ yum remove ntp
+	$ yum install chrony
+	Open chrony.conf and replace ‘allow &lt;IP/CIDR&gt;’ with your Management network</code></pre>
+
+<p><em>Enable chrony</em></p>
+
+<pre><code>	$ systemctl enable chronyd.service
+	$ systemctl start chronyd.service
+	$ systemctl restart chronyd.service</code></pre>
+
+<p><em>Reboot</em></p>
+
+<pre><code>init 6</code></pre>
+
+<h2 id='install_openstack'>Install OpenStack</h2>
+
+<h4 id='install_packstack_controller_node'>Install PackStack (Controller Node)</h4>
+
+<pre><code>$ sudo yum install -y centos-release-openstack-mitaka
+$ sudo yum update -y
+$ sudo yum install -y openstack-packstack</code></pre>
+
+<p><em>Generate answer file (Controller Node)</em></p>
+
+<pre><code>$ packstack --gen-answer-file=packstack_answers.conf</code></pre>
+
+<p><em>Modify answer file to change ip address of Network and Compute node</em></p>
+
+<pre><code>CONFIG_COMPUTE_HOSTS=172.21.64.5
+CONFIG_NETWORK_HOSTS=172.21.64.2</code></pre>
+
+<p><strong>Answer is already populated with random passwords for all your services, change them as required</strong></p>
+
+<p><em>(Optional) I choose to install</em><em>Heat</em>* as well*</p>
+
+<pre><code>CONFIG_HEAT_INSTALL=y</code></pre>
+
+<p><em>Install openstack</em></p>
+
+<pre><code>$ packstack --answer-file=packstack_answers.conf</code></pre>
+
+<p><em>Once install is successful you will see a screen similar to this</em></p>
+
+<pre><code>*** Installation completed successfully ***
+
+Additional information:
+ * Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.
+ * File /root/keystonerc_admin has been created on OpenStack client host 172.21.64.1. To use the command line tools you need to source the file.
+ * To access the OpenStack Dashboard browse to http://172.21.64.1/dashboard .
+Please, find your login credentials stored in the keystonerc_admin in your home directory.
+ * To use Nagios, browse to http://172.21.64.1/nagios username: nagiosadmin, password: 8908d16396354aa4
+ * The installation log file is available at: /var/tmp/packstack/20160621-160219-uCI8ju/openstack-setup.log
+ * The generated manifests are available at: /var/tmp/packstack/20160621-160219-uCI8ju/manifests</code></pre>
+
+<p><em>Open Horizon Dashboard</em></p>
+
+<pre><code>http://172.21.64.1/dashboard
+The root password setup by PackStack script is available in /root/keystonerc_admin</code></pre>
+
+<p><em>Source /root/keystonerc_admin file</em></p>
+
+<pre><code>$ . /root/keystonerc_admin</code></pre>
+
+<h2 id='configure_openstack'>Configure OpenStack</h2>
+
+<p>The following tasks were performed as a part of initial configuration.</p>
+
+<ul>
+<li>Network Configuration</li>
+
+<li>Clean up default network created by PackStack script</li>
+
+<li>Create new Public, Private network and its subnet</li>
+
+<li>Create a new router</li>
+
+<li>Upload a CentOS qcow2 image</li>
+
+<li>Create a Key pair</li>
+
+<li>Configure Security Group</li>
+
+<li>Deploy an instance from CentOS image</li>
+
+<li>Attach floating IP</li>
+
+<li>Login to instance</li>
+</ul>
+
+<h4 id='network_configuration_network_node'>Network Configuration (Network Node)</h4>
+
+<pre><code>$ ovs-vsctl show
+Bridge &quot;br-eth1”
+    Port &quot;br-eth1”
+        Interface &quot;br-eth1”
+            type: internal
+    Port “eth1”
+        Interface “eth1”
+Bridge br-int
+    fail_mode: secure
+    Port br-int
+        Interface br-int
+            type: internal
+    Port patch-tun
+        Interface patch-tun
+            type: patch
+            options: {peer=patch-int}
+    Port &quot;tap15df1b42-06&quot;
+        tag: 1
+        Interface &quot;tap15df1b42-06&quot;
+            type: internal
+    Port &quot;qr-494def92-bc&quot;
+        tag: 1
+        Interface &quot;qr-494def92-bc&quot;
+            type: internal
+Bridge br-ex
+    Port “eth2”</code></pre>
+
+<p><em>Note that eth1 is a port on Bridge br-eth1 and eth2 is a port on Bridge br-ex. This would be missing in your Network node at this point. Let’s go ahead and add this.</em></p>
+
+<pre><code>Networking
+	Management (eth0)
+	Guest Data (eth1)
+	External Network (eth2)
+
+$ ovs-vsctl add-br br-eth1
+$ ovs-vsctl add-port br-eth1 eth1
+$ ovs-vsctl add-port br-ex eth2</code></pre>
+
+<p><em>Repeat the steps for Compute Node</em></p>
+
+<pre><code>$ ovs-vsctl add-br br-eth1
+$ ovs-vsctl add-port br-eth1 eth1</code></pre>
+
+<h4 id='clean_up_default_network_created_by_packstack_script'>Clean up default network created by PackStack script</h4>
+
+<p><em>Open Horizon Dashboard</em></p>
+
+<pre><code>http://172.21.64.1/dashboard
+The admin password setup by PackStack script is available in /root/keystonerc_admin</code></pre>
+
+<p><img alt='login_screen' src='https://cloud.githubusercontent.com/assets/10396579/16363915/e0b6b4c6-3bf6-11e6-9240-6c9643ee2480.png' /></p>
+
+<p><em>Source /root/keystonerc_admin file</em></p>
+
+<pre><code>$ . /root/keystonerc_admin</code></pre>
+
+<p><em>Delete existing network and routers</em></p>
+<img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16553155/2ceebd0a-41e4-11e6-97e4-0ec151952fb5.png' width='830' /><img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16553031/2b4d7884-41e3-11e6-8cc1-bbcf55b0f4b9.png' width='830' />
+<p><em>Create new Public Network</em></p>
+
+<p>This network will have access to the outside (<strong>external</strong>) network. I am using the same as VLAN 150 mentioned before. The public-subnet(more about this in a moment) will be created by using a subgroup of ip’s from the 172.21.64.0/22 subnet.</p>
+
+<p><img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16553291/60c7ab72-41e5-11e6-8d1e-6cc31a553666.png' /></p>
+
+<p><em>Create Public Subnet</em></p>
+
+<p>I have assigned a subgroup of IP from VLAN 150 to the public Sidney. This will be used by OpenStack to assign elastic IP for the VM&#8217;s</p>
+
+<p><img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16553495/a306e150-41e6-11e6-8650-9424e2c91939.png' /> <img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16553498/a501ac88-41e6-11e6-8699-d6f559cba881.png' /></p>
+
+<pre><code>Note that DNS server although a different subnet is routable on VLAN 150 and this is done on the network side.
+
+Ideally the external Network should be able to reach Internet. This needs to be configured on the network end</code></pre>
+
+<p><em>Create new Private Network</em></p>
+<img align='center' src='https://cloud.githubusercontent.com/assets/10396579/16553686/a35b2afc-41e7-11e6-8908-960cf9de43d9.png' width='830' />
+<p><em>Create Private Subnet</em></p>
+
+<p>You can choose a Private IP range appropriate to your organisation.</p>
+
+<p><img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16555338/c91efa3e-41f1-11e6-82a9-68dfa3d6fd53.png' /></p>
+
+<p><img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16555339/c9e14968-41f1-11e6-9450-191258d3db0d.png' /></p>
+
+<p><em>Configure Security Group</em></p>
+
+<pre><code>Note: The following security group configuration was done with PoC in mind. DO NOT USE THIS FOR PRODUCTION</code></pre>
+
+<p>We will create a security group that will allow all Incoming and Outgoing traffic.</p>
+
+<p>From <strong>Project</strong> -&gt; <strong>Access and Security</strong> -&gt; <strong>Security</strong> <strong>Groups</strong> Select default and click on Manage rules.</p>
+
+<p>Configure the group to look like this.</p>
+<img src='https://cloud.githubusercontent.com/assets/10396579/16556538/4154f34a-41f8-11e6-8b78-fadde418c911.png' width='830' />
+<p><em>Create a Key Pair</em></p>
+
+<p>From <strong>Project</strong> -&gt; <strong>Access and Security</strong> -&gt; <strong>Key</strong> <strong>Pairs</strong> select <strong>+Create Key Pair</strong></p>
+
+<p>Download the .pem file for later use</p>
+
+<pre><code>You can also create your own RSA key and upload if you prefer doing so</code></pre>
+
+<p><em>Upload CentOS 7 image</em></p>
+
+<p>The default Cirros image does not do much.Lets upload create a CentOS image for creating our first instance.</p>
+
+<p>Copy the url CentOS latest version ISO image from <a href='http://cloud.centos.org/centos/7/images/'>here</a></p>
+
+<pre><code>Copy the ISO url.There is no need to download the ISO Image.</code></pre>
+
+<p>From <strong>Admin</strong> -&gt; <strong>Images</strong> select <strong>Create Image</strong></p>
+
+<p>Paste the URL in to the field for <strong>Image Location</strong>.</p>
+
+<p>(https://cloud.githubusercontent.com/assets/10396579/16555562/0460c1b2-41f3-11e6-9b0a-e05855e02819.png)</p>
+
+<p><em>Launch instance and attach floating ip</em></p>
+
+<p>Now that we uploaded a CentOS image. Let&#8217;s go ahead and Launch Instance and attach a floating IP</p>
+
+<p>From <strong>Project</strong> -&gt; <strong>Instances</strong> -&gt; <strong>Launch</strong> <strong>Instance</strong></p>
+
+<pre><code>- Details
+		Provide Instance name(Leave rest to defaults)
+- Source
+		Select the CentOS image that was created
+- Flavour
+		Select Flavour(depending on the compute instance)
+- Networks
+		Select &quot;Private Network&quot;
+- Network Ports
+		Leave default
+- Security Groups
+		Select &quot;default&quot; security group that was configured
+- Key pair
+		Select the key pair that created(Might be the only option unless you have created multiple</code></pre>
+
+<p><strong>Launch</strong> <strong>Instance</strong> to create instance.</p>
+
+<p><em>Attach floating IP</em></p>
+
+<p>From <strong>Project</strong> -&gt; <strong>Instances</strong> -&gt; <strong>Instance</strong> <strong>Name</strong> -&gt; <strong>Action</strong> drop down select <strong>Associate</strong> <strong>Floating</strong> <strong>IP</strong></p>
+
+<p><img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16556720/37fd6e0c-41f9-11e6-9a84-7127b3d423a3.png' /></p>
+
+<p><img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16556726/398e842c-41f9-11e6-88bf-b2949a5bfe9d.png' /></p>
+
+<p><em>Login to instance</em></p>
+
+<p>Once the instance is up and running. You should be able to login with the floating IP assigned.</p>
+
+<p><img alt='' src='https://cloud.githubusercontent.com/assets/10396579/16556897/3d7a1f28-41fa-11e6-82b0-a3fda88a208e.png' /></p>
+
+<pre><code>$ ssh -l CentOS -i &lt;pem _key&gt; &lt;floating_ip&gt;</code></pre>
+
+<h2 id='part_2'>Part 2</h2>
+
+<p>In Part 2 of this blog we will explore how to add a Second Compute node</p>
+
+<h2 id='further_reading'>Further Reading</h2>
+
+<p><a href='https://anturis.com/blog/openstack-the-essential-guide/'>Openstack essential Guide</a></p>
+
+<p><a href='https://cloudbase.it/rdo-multi-node/'>RDO multinode</a></p>
+
+<p><a href='https://www.youtube.com/watch?v=eOlIB323c8s'>RDO multinode a very useful Youtube video by Seth Jennings</a></p>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="glyphicon glyphicon-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#OpenStack-ref">
+    		OpenStack <span>1</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+  
+    <hr>
+    <ul class="pagination">
+    
+      <li class="prev disabled"><a>&larr; Previous</a></li>
+    
+      <li><a href="/archive.html">Archive</a></li>
+    
+      <li class="next disabled"><a>Next &rarr;</a>
+    
+    </ul>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    
+    
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <p>&copy; 2016 Manu Balasree
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>
+        </p>
+      </div>
+    </div>
+
+    
+
+
+
+
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-123-12']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+
+
+
+    <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/assets/themes/bootstrap-3/bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
