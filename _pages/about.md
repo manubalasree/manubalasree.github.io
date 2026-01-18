@@ -15,7 +15,7 @@ Over my career, I've:
 
 ## Technical Journey
 
-My relationship with Linux began in late 1990s Trivandrum, Kerala, where I was active member of Trivandru Linux users group promoting the use of opensource software in the community.
+My relationship with Linux began in late 1990s Trivandrum, Kerala, where I was active member of Trivandrum Linux users group promoting the use of opensource software in the community.
 
 Linux remains my "first love" - the foundation that informs everything I build.
 
