@@ -13,7 +13,7 @@ tags:
   - observability
 ---
 
-![URL Shortener Architecture](/assets/images/posts/url-shortener-architecture.png)
+![URL Shortener Architecture](/assets/images/posts/url-shortener-v1.png)
 
 In the world of Site Reliability Engineering (SRE), theory is good, but practice is paramount. I'm currently in Phase 6 of a project designed to demonstrate modern SRE practices, infrastructure as code, and operational excellence: a Production-Grade URL Shortener deployed on a Kubernetes cluster.
 
