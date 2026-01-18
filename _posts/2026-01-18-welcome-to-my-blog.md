@@ -25,13 +25,4 @@ Terraform patterns, Ansible playbooks, Kubernetes operations, and CI/CD pipeline
 **SRE Practices**
 Building observability, writing meaningful SLOs, on-call strategies, and incident postmortem templates.
 
-## Coming Up
-
-Some posts I'm planning:
-
-- Debugging high CPU usage on a production Linux server
-- Setting up Prometheus and Grafana for infrastructure monitoring
-- Terraform patterns for multi-environment deployments
-- Linux performance tools every SRE should know
-
 Thanks for visiting!
