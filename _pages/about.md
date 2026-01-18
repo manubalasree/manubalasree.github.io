@@ -17,7 +17,7 @@ Over my career, I've:
 
 My relationship with Linux began in late 1990s Trivandrum, Kerala, where I was among the pioneers installing Debian via netinst over 64kbps broadband - a level of technical commitment rare for teenagers in tier-2 Indian cities at the time. That early exposure, starting with a Sinclair Spectrum and QuickBASIC, shaped my systematic approach to complex technical challenges.
 
-Linux internals remains my "first love" - the foundation that informs everything I build.
+Linux remains my "first love" - the foundation that informs everything I build.
 
 ## Current Focus
 
@@ -29,7 +29,7 @@ Linux internals remains my "first love" - the foundation that informs everything
 
 ## Beyond Work
 
-I live in London, Ontario with my family and our mini Australian Shepherd. I co-host a Malayalam storytelling podcast with my spouse, and find clarity through meditative walks while thinking through complex technical problems.
+I live in London, Ontario with my family and our mini Australian Shepherd. I co-host a [Malayalam storytelling podcast](https://open.spotify.com/show/2AKdjPwTQPV6xYXW82xkux) with my spouse, and find clarity through meditative walks while thinking through complex technical problems.
 
 ## Connect
 
