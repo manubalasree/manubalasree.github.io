@@ -32,8 +32,8 @@ paginate_path: /page:num/
 author:
   name: "Manu Balasree"
   avatar: # "/assets/images/avatar.jpg"
-  bio: "SRE | Linux Systems | Infrastructure"
-  location: # "Somewhere"
+  bio: "SRE & Cloud Architect | 18 years in infrastructure"
+  location: "London, Ontario"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
