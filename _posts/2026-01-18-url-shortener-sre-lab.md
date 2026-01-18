@@ -13,6 +13,8 @@ tags:
   - observability
 ---
 
+![URL Shortener Architecture](/assets/images/posts/url-shortener-architecture.png)
+
 In the world of Site Reliability Engineering (SRE), theory is good, but practice is paramount. I'm currently in Phase 6 of a project designed to demonstrate modern SRE practices, infrastructure as code, and operational excellence: a Production-Grade URL Shortener deployed on a Kubernetes cluster.
 
 While this system runs on a single Minisforum UM790 Pro mini PC in my homelab, it is architected to mimic a full-scale enterprise environment. By leveraging Proxmox VE for virtualization, I created a 3-node K3s High Availability (HA) cluster that hosts a complete observability stack, service mesh, and distributed database system.
