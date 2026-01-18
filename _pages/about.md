@@ -3,29 +3,34 @@ title: "About"
 permalink: /about/
 ---
 
-## About Me
+I'm a Site Reliability Engineer and Cloud Architect with 18 years of experience building and scaling infrastructure across diverse environments. Currently working in London, Ontario, I specialize in AWS infrastructure, Kubernetes, automation, and cost optimization.
 
-I'm an engineer with experience spanning Linux systems administration, Site Reliability Engineering, and cloud platform engineering. I enjoy building reliable, scalable infrastructure and solving complex production problems.
+## Impact & Scale
 
-This blog is where I share practical insights from working with production systems, troubleshooting guides, and lessons learned from the field.
+Over my career, I've:
+- Delivered **$500K+ in documented infrastructure savings** through optimization and automation
+- Managed **thousands of VMs** across multi-cloud environments spanning multiple time zones
+- Led technology adoption initiatives through working prototypes rather than theoretical proposals
+- Built production-grade observability platforms and implemented blue-green deployment strategies
 
-## What I Write About
+## Technical Journey
 
-**Linux Systems**
-- Performance tuning and troubleshooting
-- Kernel internals and system internals
-- Networking and security hardening
+My relationship with Linux began in late 1990s Trivandrum, Kerala, where I was among the pioneers installing Debian via netinst over 64kbps broadband - a level of technical commitment rare for teenagers in tier-2 Indian cities at the time. That early exposure, starting with a Sinclair Spectrum and QuickBASIC, shaped my systematic approach to complex technical challenges.
 
-**Site Reliability Engineering**
-- Observability and monitoring strategies
-- Incident response and postmortems
-- SLOs, SLIs, and error budgets
+Linux internals remains my "first love" - the foundation that informs everything I build.
 
-**Cloud & Infrastructure**
-- Kubernetes and container orchestration
-- Infrastructure as Code (Terraform, Ansible)
-- Multi-cloud architecture patterns
+## Current Focus
 
-## Get in Touch
+- Kubernetes and cloud-native architectures
+- Infrastructure as Code and GitOps practices
+- Observability and performance optimization
+- Systems design at scale
+- Staff-level SRE practices and leadership
 
-Feel free to connect with me on [GitHub](https://github.com/manubalasree).
+## Beyond Work
+
+I live in London, Ontario with my family and our mini Australian Shepherd. I co-host a Malayalam storytelling podcast with my spouse, and find clarity through meditative walks while thinking through complex technical problems.
+
+## Connect
+
+- [GitHub](https://github.com/manubalasree)
