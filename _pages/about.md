@@ -15,7 +15,7 @@ Over my career, I've:
 
 ## Technical Journey
 
-My relationship with Linux began in late 1990s Trivandrum, Kerala, where I was among the pioneers installing Debian via netinst over 64kbps broadband - a level of technical commitment rare for teenagers in tier-2 Indian cities at the time. That early exposure, starting with a Sinclair Spectrum and QuickBASIC, shaped my systematic approach to complex technical challenges.
+My relationship with Linux began in late 1990s Trivandrum, Kerala, where I was active member of Trivandru Linux users group promoting the use of opensource software in the community.
 
 Linux remains my "first love" - the foundation that informs everything I build.
 
