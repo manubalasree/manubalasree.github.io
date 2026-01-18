@@ -3,7 +3,7 @@ title: "About"
 permalink: /about/
 ---
 
-I'm a Site Reliability Engineer and Cloud Architect with 18 years of experience building and scaling infrastructure across diverse environments. Currently working in London, Ontario, I specialize in AWS infrastructure, Kubernetes, automation, and cost optimization.
+I'm a Site Reliability Engineer and Cloud Architect with 18 years of experience building and scaling infrastructure across diverse environments. Currently based in Ontario, Canada, I specialize in AWS infrastructure, Kubernetes, automation, and cost optimization.
 
 ## Impact & Scale
 
@@ -29,7 +29,7 @@ Linux remains my "first love" - the foundation that informs everything I build.
 
 ## Beyond Work
 
-I live in London, Ontario with my family and our mini Australian Shepherd. I co-host a [Malayalam storytelling podcast](https://open.spotify.com/show/2AKdjPwTQPV6xYXW82xkux) with my spouse, and find clarity through meditative walks while thinking through complex technical problems.
+I live in Ontario, Canada with my family and our mini Australian Shepherd. I co-host a [Malayalam storytelling podcast](https://open.spotify.com/show/2AKdjPwTQPV6xYXW82xkux) with my spouse, and find clarity through meditative walks while thinking through complex technical problems.
 
 ## Connect
 
