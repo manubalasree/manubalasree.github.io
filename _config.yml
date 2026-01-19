@@ -35,6 +35,9 @@ author:
   bio: "SRE & Cloud Architect | 18 years in infrastructure"
   location: "Ontario, Canada"
   links:
+    - label: "Profile"
+      icon: "fas fa-fw fa-user"
+      url: "https://profile.virtmicro.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/manubalasree"
