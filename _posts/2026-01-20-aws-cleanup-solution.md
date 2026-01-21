@@ -153,10 +153,10 @@ This configuration approach provides:
 
 This configuration format follows the [aws-nuke](https://github.com/ekristen/aws-nuke) specification. aws-nuke is a powerful, battle-tested open-source tool that can identify and remove hundreds of AWS resource types across all regions. By building my orchestration layer around aws-nuke, I got:
 
-- ✓ Comprehensive resource coverage (300+ AWS resource types)
-- ✓ Active maintenance and community support
-- ✓ Proven reliability across thousands of AWS accounts
-- ✓ Regular updates for new AWS services
+- Comprehensive resource coverage (300+ AWS resource types)
+- Active maintenance and community support
+- Proven reliability across thousands of AWS accounts
+- Regular updates for new AWS services
 
 When teams commit changes to their configuration files, GitLab CI automatically validates the syntax and uploads the config to a **staging prefix** in S3. This triggers a dry-run execution, and an approval email is sent to the team with a link to review the dry-run logs. Teams can see exactly what resources will be affected before the configuration goes live. Once approved, the configuration moves from staging to production and becomes active for scheduled executions.
 
@@ -220,11 +220,11 @@ This design reduces operational overhead—teams only need to review and approve
 
 Sandbox environments have unique characteristics that make them perfect for this approach:
 
-✓ **High churn rate** - Resources are created and discarded frequently
-✓ **Experimentation focus** - Teams try things and move on
-✓ **Cost sensitivity** - Budget constraints demand efficiency
-✓ **Lower risk** - Non-production data means more aggressive cleanup is acceptable
-✓ **Multiple teams** - Shared responsibility requires clear ownership
+- **High churn rate** - Resources are created and discarded frequently
+- **Experimentation focus** - Teams try things and move on
+- **Cost sensitivity** - Budget constraints demand efficiency
+- **Lower risk** - Non-production data means more aggressive cleanup is acceptable
+- **Multiple teams** - Shared responsibility requires clear ownership
 
 The self-service model aligns perfectly with these characteristics. Teams understand their own resources better than anyone else, and they're empowered to make the right decisions.
 
@@ -233,24 +233,24 @@ The self-service model aligns perfectly with these characteristics. Teams unders
 ## Benefits Across the Organization
 
 ### For Development Teams
-- ✓ **Autonomy**: Control their own cleanup rules without platform team tickets
-- ✓ **Safety**: Protect critical resources with simple tags or filters
-- ✓ **Transparency**: See exactly what will be deleted before it happens
-- ✓ **Flexibility**: Different rules for different regions or accounts
-- ✓ **Speed**: Quick onboarding, no waiting
+- **Autonomy**: Control their own cleanup rules without platform team tickets
+- **Safety**: Protect critical resources with simple tags or filters
+- **Transparency**: See exactly what will be deleted before it happens
+- **Flexibility**: Different rules for different regions or accounts
+- **Speed**: Quick onboarding, no waiting
 
 ### For Platform Team
-- ✓ **Standardization**: One solution deployed across all teams
-- ✓ **Visibility**: Central reporting and monitoring
-- ✓ **Compliance**: Built-in approval workflows and audit trails
-- ✓ **Scalability**: New teams self-onboard without platform intervention
-- ✓ **Maintenance**: One Terraform module, many deployments
+- **Standardization**: One solution deployed across all teams
+- **Visibility**: Central reporting and monitoring
+- **Compliance**: Built-in approval workflows and audit trails
+- **Scalability**: New teams self-onboard without platform intervention
+- **Maintenance**: One Terraform module, many deployments
 
 ### For Finance/Leadership
-- ✓ **Cost Savings**: Significant reduction in sandbox spend
-- ✓ **Governance**: Centralized oversight with distributed execution
-- ✓ **Metrics**: Track usage patterns and identify waste
-- ✓ **Predictability**: Scheduled, consistent cleanup cycles
+- **Cost Savings**: Significant reduction in sandbox spend
+- **Governance**: Centralized oversight with distributed execution
+- **Metrics**: Track usage patterns and identify waste
+- **Predictability**: Scheduled, consistent cleanup cycles
 
 ## Implementation Lessons Learned
 
