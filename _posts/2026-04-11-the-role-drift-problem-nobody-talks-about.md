@@ -35,6 +35,8 @@ When you treat four things as one thing, you get chaos. Every ticket that comes 
 
 The fix isn't better ticket discipline. It's decomposing the monolith into what it actually is.
 
+![Runner Role Layer Diagram](/assets/images/posts/runner-role-drift.png)
+
 ## The layer cake model
 
 The model is simple: four layers, each with a clear owner and a clear scope.
@@ -80,10 +82,7 @@ The account-specific drift goes away. Not because of better process discipline, 
 
 This model only works if ownership is explicit.
 
-- Global permissions belong to platform or security.
-- Team permissions belong to the service owner.
-- Environment permissions belong to the environment steward.
-- Account permissions belong to the account owner.
+The layering isn't just technical — it's an ownership model. Global permissions are a platform concern. Team permissions are a service owner concern. Environment permissions belong to whoever is accountable for prod. Account permissions are the account owner's last mile.
 
 If you leave that blurry, the next ticket will still become another statement in the monolith. The point of layered policies is not to make change impossible — it's to make change obvious.
 
