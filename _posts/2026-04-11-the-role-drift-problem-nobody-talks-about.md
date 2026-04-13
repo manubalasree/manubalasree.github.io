@@ -35,9 +35,9 @@ When you treat four things as one thing, you get chaos. Every ticket that comes 
 
 The fix isn't better ticket discipline. It's decomposing the monolith into what it actually is.
 
-![Runner Role Layer Diagram](/assets/images/posts/runner-role-drift.png)
-
 ## The layer cake model
+
+![Runner Role Layer Diagram](/assets/images/posts/runner-role-drift.png)
 
 The model is simple: four layers, each with a clear owner and a clear scope.
 
