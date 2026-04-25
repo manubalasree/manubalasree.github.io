@@ -1,5 +1,5 @@
 ---
-title: "The Bug Was Fixed at 2:25 AM"
+title: "The Bug Was Fixed at 2:25 AM. Full Recovery Took 28 Hours. Here's Why"
 date: 2026-04-25
 categories:
   - incident-analysis
