@@ -1,4 +1,9 @@
-# The Bug Was Fixed at 2:25 AM. Full Recovery Took 28 Hours. Here's Why.
+---
+layout: post
+title: "The Bug Was Fixed at 2:25 AM. Full Recovery Took 28 Hours. Here's Why."
+date: 2026-04-25
+categories: aws incident-analysis
+---
 
 *By Manu Balakrishnan Sreekumari — Site Reliability Engineer with 18 years of experience in large-scale distributed systems and cloud infrastructure.*
 
