@@ -11,8 +11,6 @@ tags:
   - race-condition
 ---
 
-*By Manu Balakrishnan Sreekumari — Site Reliability Engineer with 18 years of experience in large-scale distributed systems and cloud infrastructure.*
-
 ---
 
 ## The Night the Scheduler Lied
