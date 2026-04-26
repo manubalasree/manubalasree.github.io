@@ -25,6 +25,8 @@ Then something unexpected happens. Every cab in the city â€” thousands of them â
 
 If you've spent a decade in the trenches of distributed systems, you've seen this play out. In the AWS us-east-1 incident on October 19, the 'cabs' were DynamoDB records, and the 'scheduler' was a broken DNS Enactor.
 
+![AWS DynamoDB Outage Failure Sequence](/assets/images/posts/aws-dynamodb-outage-fail-sequence.png)
+
 ---
 
 ## The Root Cause: A Race Condition in DNS Convergence
