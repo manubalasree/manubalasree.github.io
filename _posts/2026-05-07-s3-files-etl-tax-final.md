@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "S3 Files and the Coordination Tax in Regulated Data Pipelines"
 date: 2026-05-07
 categories:
@@ -19,7 +18,7 @@ tags:
 
 # S3 Files and the Coordination Tax in Regulated Data Pipelines
 
-*By Manu Balakrishnan Sreekumari — Site Reliability Engineer, 18 years*
+*By Manu Balakrishnan Sreekumari*
 
 ---
 
