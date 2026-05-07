@@ -131,4 +131,4 @@ If you want to see the Terraform implementation and a Lambda-focused perspective
 
 ---
 
-*The follow-up to this article — S3 Files after six months in production — will cover real sync latency data, lost and found edge cases encountered under load, and what a compliance audit looks like when your pipeline lives in the storage layer. Subscribe to be notified when it publishes.*
+*A follow-up to this article will cover S3 Files in production — real sync latency data, lost and found edge cases under load, and what a compliance audit looks like when your pipeline lives in the storage layer.*
