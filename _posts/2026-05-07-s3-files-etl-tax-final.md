@@ -16,8 +16,6 @@ tags:
   - regulated-industry
 ---
 
-# S3 Files and the Coordination Tax in Regulated Data Pipelines
-
 *By Manu Balakrishnan Sreekumari*
 
 ---
