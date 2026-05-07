@@ -17,7 +17,7 @@ tags:
   - regulated-industry
 ---
 
-# The Convergence of Storage and Compute: Eliminating the "Coordination Tax" with S3 Files
+# S3 Files and the Coordination Tax in Regulated Data Pipelines
 
 *By Manu Balakrishnan Sreekumari — Site Reliability Engineer, 18 years*
 
