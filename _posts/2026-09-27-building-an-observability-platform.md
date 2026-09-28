@@ -147,6 +147,9 @@ There's a distinction worth being precise about: this project has enterprise-*ca
 - **Disaster recovery, HA control plane, real capacity headroom**: no backup/restore story for etcd or any local PVC, and this node runs hot rather than carrying spare capacity as a baseline.
 - **Runbooks**: the incident log documents root causes in real detail, but isn't yet written as "if X happens, do Y" that a second on-call engineer could follow cold.
 - **Image signing / SBOM**: vendored charts are version-pinned and reviewed, but nothing verifies the container images themselves.
+- **Resource footprint only works because the box is oversized**: sidecars on every pod, plus Prometheus, Thanos, Loki, Tempo, Vector, and ArgoCD, all fit comfortably because the UM790 Pro runs 64 GB of DDR5. Try this on a 16 GB NUC or a Raspberry Pi cluster and the memory tax from Envoy sidecars, TSDB compaction, and Vector's buffering forces aggressive limits or OOM kills fast.
+- **Classic sidecars, not ambient mesh**: Envoy sidecar injection over Istio Ambient's `ztunnel` or Cilium eBPF, on purpose. Sidecarless data planes cut per-pod proxy overhead, but on a single node, the per-pod memory cost was worth it for deterministic L7 header manipulation, W3C trace context injection, and mTLS troubleshooting entirely in user space, no kernel dependencies to debug.
+- **versitygw is a single point of failure**: it backs Thanos, Tempo, and Loki from one local instance over a POSIX filesystem, no replication, no distributed durability. That's fine for emulating an S3 API without cloud egress costs, but a real production tier would need Ceph, distributed MinIO, or an actual cloud object store instead.
 
 ## Why bother with any of this
 
