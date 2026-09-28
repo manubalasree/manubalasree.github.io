@@ -87,6 +87,8 @@ The throughline across nearly every row: a label-gating rule, a values-layering 
 
 ## Bootstrapping it: two manual commands, then GitOps takes over forever
 
+![ArgoCD Dashboard](/assets/images/posts/argocd.png)
+
 GitOps has a chicken-and-egg problem at the very start: ArgoCD is what watches the git repos and applies whatever it finds, but ArgoCD itself can't GitOps itself into existence before it exists. So there are exactly two commands run by hand, once, ever:
 
 ```sh
