@@ -15,7 +15,7 @@ tags:
 
 *How an app-of-apps pattern, a dual-ingress topology, and multi-window burn-rate alerts turn a single mini PC into a production-grade platform laboratory.*
 
-![UM790 Pro](/assets/images/posts/mini.jpg)
+![UM790 Pro](/assets/images/posts/minipc.jpg)
 
 I've always learned best by building the thing, not reading about it, so this was a weekend project: stand up a production-grade observability platform on Kubernetes, on a single Minisforum UM790 Pro Mini PC, no cloud account, no monthly bill. The twist that makes it worth writing up is the app-of-apps pattern underneath it, the same GitOps foundation a real platform team runs, driving every piece from MetalLB up through the full mesh, three-pillar telemetry, and SLO-based alerting below.
 
