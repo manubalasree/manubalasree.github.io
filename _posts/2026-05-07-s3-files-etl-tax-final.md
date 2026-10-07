@@ -6,7 +6,6 @@ categories:
   - aws
 author: Manu Balakrishnan Sreekumari
 role: Site Reliability Engineer
-experience: 18 years
 tags:
   - aws
   - s3

@@ -3,7 +3,7 @@ title: "About"
 permalink: /about/
 ---
 
-I'm a Site Reliability Engineer and Cloud Architect with 18 years of experience building and scaling infrastructure across diverse environments. Currently based in Ontario, Canada, I specialize in AWS infrastructure, Kubernetes, automation, and cost optimization.
+I'm a Site Reliability Engineer and Cloud Architect building and scaling infrastructure across diverse environments. Currently based in Ontario, Canada, I specialize in AWS infrastructure, Kubernetes, automation, and cost optimization.
 
 ## Impact & Scale
 

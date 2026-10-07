@@ -22,7 +22,7 @@ What nobody asked was the question that actually mattered: what enabled a junior
 
 I did not know it at the time, but I had just lived my first encounter with what Sidney Dekker calls the Old View of human error. Find the person. Label it carelessness. Move on. The system remains exactly as it was.
 
-I have been in SRE and infrastructure roles for 18 years since that day. I have run postmortems, sat on incident bridges, written action items, and watched engineers get blamed for failures that the system itself made almost inevitable. It took reading Dekker's *Field Guide to Understanding Human Error* to give me the language for what I had been watching all along.
+I have been in SRE and infrastructure roles ever since that day. I have run postmortems, sat on incident bridges, written action items, and watched engineers get blamed for failures that the system itself made almost inevitable. It took reading Dekker's *Field Guide to Understanding Human Error* to give me the language for what I had been watching all along.
 
 This isn't an academic review. It is six lessons I carried out of that book and back into my daily work.
 
@@ -142,6 +142,6 @@ None of this is easy in organisations that are built around the Old View. The pr
 
 Dekker makes a blunt observation in his final chapter: every organisation has room to improve its safety. What separates a strong safety culture from a weak one is not how large this room is. What matters is the organisation's willingness to explore this space, to find leverage points to learn and improve.
 
-After 18 years in SRE and infrastructure roles, that is the most honest thing I have read about safety culture. Not a maturity model. Not a framework. Just a question about willingness.
+After years in SRE and infrastructure roles, that is the most honest thing I have read about safety culture. Not a maturity model. Not a framework. Just a question about willingness.
 
 The Old View is easier. It is faster, more legible, and it satisfies the organisational need for a conclusion. The New View is slower, less comfortable, and it tends to reveal more problems the deeper you look. That is not a reason to avoid it. That is exactly the point.

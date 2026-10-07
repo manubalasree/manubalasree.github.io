@@ -32,7 +32,7 @@ paginate_path: /page:num/
 author:
   name: "Manu Balasree"
   avatar: # "/assets/images/avatar.jpg"
-  bio: "SRE & Cloud Architect | 18 years in infrastructure"
+  bio: "SRE & Cloud Architect"
   location: "Ontario, Canada"
   links:
     - label: "Profile"
