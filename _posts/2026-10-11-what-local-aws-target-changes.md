@@ -11,6 +11,7 @@ tags:
   - iac
   - podman
   - localstack
+  - floci
 ---
 
 *By Manu Balasree, SRE & Cloud Architect*
