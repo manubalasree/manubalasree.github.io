@@ -28,8 +28,6 @@ tags:
 
 Shared AWS sandboxes are slow in a way that has nothing to do with AWS. Other developers' stacks are in the account. Teardown needs coordination, and not every place has a teardown policy at all. In my experience a clean rebuild there takes at least a week, often weeks, and sometimes it never happens.
 
-Note that the "weeks" are the shared-sandbox case. The 7 minutes below is a dedicated account where I own everything, so that comparison is Floci against the best case on real AWS, not the typical one.
-
 This article is about getting that loop back on your own machine. Floci is a free, MIT-licensed multi-cloud emulator (I only tested the AWS side). One endpoint, no account, no token. I run it in rootless Podman, point one Terragrunt module at it, then apply the same code to real AWS, changing only the environment config.
 
 I used LocalStack on complex setups before. It has since become a single product that requires an account and an auth token, with a free tier for non-commercial use and paid plans beyond that, as [LocalStack explains](https://blog.localstack.cloud/the-road-ahead-for-localstack/). That was reason enough to look elsewhere.
