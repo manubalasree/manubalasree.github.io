@@ -1,5 +1,5 @@
 ---
-title: "34 Seconds on Floci, 7 Minutes on AWS: Same Terraform, Two Clouds"
+title: "Sub-Minute Local Loops: Reaching the Cloud Faster with Floci"
 date: 2026-10-11
 categories:
   - sre
