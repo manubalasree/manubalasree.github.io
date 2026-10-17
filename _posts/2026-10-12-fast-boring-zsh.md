@@ -183,3 +183,7 @@ python3 bench/ptybench.py ~ 15 probe         # time to first prompt
 If your numbers disagree with mine, trust yours. The harness expects the minimal theme's `❯` prompt; for any other prompt pass `--glyph ''`.
 
 Full source on GitHub: [manubalasree/dotzsh](https://github.com/manubalasree/dotzsh)
+
+---
+
+*By Manu Balasree, SRE & Cloud Architect*
