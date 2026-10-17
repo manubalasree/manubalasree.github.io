@@ -4,7 +4,7 @@ date: 2026-05-07
 categories:
   - sre
   - aws
-author: Manu Balakrishnan Sreekumari
+author: Manu Balasree
 role: Site Reliability Engineer
 tags:
   - aws
@@ -15,7 +15,7 @@ tags:
   - regulated-industry
 ---
 
-*By Manu Balakrishnan Sreekumari*
+*By Manu Balasree, SRE & Cloud Architect*
 
 ---
 
