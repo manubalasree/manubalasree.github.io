@@ -1,0 +1,57 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+search: false
+---
+
+@charset "utf-8";
+
+// VirtMicro brand (see virtmicro-brand-kit/BRAND-GUIDE.md)
+$vm-navy: #0F2557;
+$vm-blue: #2F6FDE;
+$vm-sky: #5CA2FF;
+$vm-deep: #1A3A82;
+$vm-mist: #E8F0FE;
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("{{ '/assets/fonts/space-grotesk-latin-400-normal.woff2' | relative_url }}") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("{{ '/assets/fonts/space-grotesk-latin-500-normal.woff2' | relative_url }}") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("{{ '/assets/fonts/space-grotesk-latin-700-normal.woff2' | relative_url }}") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+// Theme variables (set before the skin so its !default values yield)
+$sans-serif: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+$text-color: $vm-navy;
+$primary-color: $vm-blue;
+$link-color: $vm-blue;
+$link-color-hover: $vm-deep;
+$link-color-visited: $vm-deep;
+$masthead-link-color: $vm-navy;
+$masthead-link-color-hover: $vm-blue;
+$footer-background-color: $vm-mist;
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+
+h1, h2, h3, h4, h5, h6,
+.site-title,
+.page__title {
+  letter-spacing: -0.02em;
+}
+
+// Clear space of half a mark height between the logo and the site title
+.greedy-nav .site-logo {
+  margin-right: 1rem;
+}
