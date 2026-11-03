@@ -51,7 +51,21 @@ h1, h2, h3, h4, h5, h6,
   letter-spacing: -0.02em;
 }
 
-// Clear space of half a mark height between the logo and the site title
-.greedy-nav .site-logo {
+// Logo stands in for the site title, with the subtitle beneath it.
+// The gap below keeps the brand guide's clear space of half a mark height.
+.site-title--logo {
+  flex-direction: column;
+  align-items: flex-start;
   margin-right: 1rem;
+}
+
+.site-title__logo {
+  display: block;
+  height: 2rem;
+  width: auto;
+}
+
+.site-title--logo .site-subtitle {
+  margin-top: 0.75rem;
+  font-weight: 500;
 }
