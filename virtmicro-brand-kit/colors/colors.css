@@ -1,0 +1,9 @@
+:root {
+  --vm-navy: #0F2557; /* Ink Navy */
+  --vm-blue: #2F6FDE; /* Signal Blue */
+  --vm-sky: #5CA2FF; /* Sky */
+  --vm-deep: #1A3A82; /* Deep Blue */
+  --vm-mist: #E8F0FE; /* Mist */
+  --vm-white: #FFFFFF; /* White */
+  --vm-font: 'Space Grotesk', system-ui, sans-serif;
+}

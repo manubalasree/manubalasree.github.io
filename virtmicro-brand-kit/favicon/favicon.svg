@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>VirtMicro</title>
+  <style>.o{stroke:#0F2557}.i{fill:#2F6FDE;stroke:#2F6FDE}@media (prefers-color-scheme: dark){.o{stroke:#FFFFFF}.i{fill:#5CA2FF;stroke:#5CA2FF}}</style>
+  <polygon class="o" points="43.1,5.2 58.8,20.9 58.8,43.1 43.1,58.8 20.9,58.8 5.2,43.1 5.2,20.9 20.9,5.2" fill="none" stroke-width="6.5" stroke-linejoin="round"/>
+  <polygon class="i" points="37,20 44,27 44,37 37,44 27,44 20,37 20,27 27,20" stroke-width="2" stroke-linejoin="round"/>
+</svg>

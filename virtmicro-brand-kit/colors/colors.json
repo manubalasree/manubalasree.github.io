@@ -1,0 +1,62 @@
+{
+  "navy": {
+    "name": "Ink Navy",
+    "hex": "#0F2557",
+    "rgb": [
+      15,
+      37,
+      87
+    ],
+    "use": "Primary. Outline, wordmark, dark backgrounds"
+  },
+  "blue": {
+    "name": "Signal Blue",
+    "hex": "#2F6FDE",
+    "rgb": [
+      47,
+      111,
+      222
+    ],
+    "use": "Accent. Inner octagon on light backgrounds, links, buttons"
+  },
+  "sky": {
+    "name": "Sky",
+    "hex": "#5CA2FF",
+    "rgb": [
+      92,
+      162,
+      255
+    ],
+    "use": "Accent on dark backgrounds"
+  },
+  "deep": {
+    "name": "Deep Blue",
+    "hex": "#1A3A82",
+    "rgb": [
+      26,
+      58,
+      130
+    ],
+    "use": "Secondary dark surface, hover states on navy"
+  },
+  "mist": {
+    "name": "Mist",
+    "hex": "#E8F0FE",
+    "rgb": [
+      232,
+      240,
+      254
+    ],
+    "use": "Light tint for page backgrounds and cards"
+  },
+  "white": {
+    "name": "White",
+    "hex": "#FFFFFF",
+    "rgb": [
+      255,
+      255,
+      255
+    ],
+    "use": "Reversed wordmark, light backgrounds"
+  }
+}
