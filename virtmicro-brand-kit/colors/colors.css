@@ -5,5 +5,6 @@
   --vm-deep: #1A3A82; /* Deep Blue */
   --vm-mist: #E8F0FE; /* Mist */
   --vm-white: #FFFFFF; /* White */
-  --vm-font: 'Space Grotesk', system-ui, sans-serif;
+  --vm-font: 'Inter', system-ui, sans-serif;
+  --vm-heading-font: 'Space Grotesk', system-ui, sans-serif;
 }
