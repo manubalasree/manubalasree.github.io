@@ -32,7 +32,8 @@ $vm-mist: #E8F0FE;
 }
 
 // Theme variables (set before the skin so its !default values yield)
-$sans-serif: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+$sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+$header-font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
 $text-color: $vm-navy;
 $primary-color: $vm-blue;
 $link-color: $vm-blue;
@@ -48,7 +49,29 @@ $footer-background-color: $vm-mist;
 h1, h2, h3, h4, h5, h6,
 .site-title,
 .page__title {
+  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
   letter-spacing: -0.02em;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 18px;
+}
+
+h1,
+.page__title {
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 1.15;
+}
+
+h2,
+.archive__subtitle,
+.archive__item-title {
+  font-size: 23px;
+}
+
+h3, h4, h5, h6 {
+  font-size: 18px;
 }
 
 // Logo stands in for the site title, with the subtitle beneath it.
@@ -67,11 +90,23 @@ h1, h2, h3, h4, h5, h6,
 
 .site-title--logo .site-subtitle {
   margin-top: 0.75rem;
+  font-size: 20px;
   font-weight: 500;
 }
 
-// Post-list excerpts: the theme's 0.75em reads too small in Space Grotesk
+// Keep navigation and supporting details below the body-text size.
+.masthead__menu-item {
+  font-size: 16px;
+}
+
+.page__meta,
+.archive__item-excerpt,
+.author__bio {
+  font-size: 14px;
+}
+
+// Post-list excerpts are more readable at 16px than the theme's 0.75em.
 .archive__item-excerpt {
-  font-size: 0.9em;
+  font-size: 16px;
   line-height: 1.6;
 }

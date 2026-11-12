@@ -78,15 +78,17 @@ Rule of thumb: body text is navy on light or white on navy. Signal Blue is for l
 
 ## 4. Typography
 
-**Space Grotesk** (SIL Open Font License, free for commercial use). Weights 400, 500 and 700 are included in `fonts/`.
+**Inter Variable** is used for body text and general UI. **Space Grotesk** (SIL Open Font License, free for commercial use) is used for headings; weights 400, 500 and 700 are included in `fonts/`.
 
-- Headings: 700, tight tracking (about -2%)
-- Body and UI: 400 or 500
+- Headings: Space Grotesk 400, 500 or 700, tight tracking (about -2%)
+- Body and UI: Inter Variable 400 or 500
 - Code and terminal examples: any monospace; JetBrains Mono or system mono pair well
 
 Web usage:
 
 ```css
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 @font-face {
   font-family: 'Space Grotesk';
   src: url('/fonts/space-grotesk-latin-400-normal.woff2') format('woff2');
@@ -100,6 +102,7 @@ Web usage:
   font-display: swap;
 }
 body { font-family: var(--vm-font); color: var(--vm-navy); }
+h1, h2, h3, h4, h5, h6 { font-family: var(--vm-heading-font); }
 ```
 
 ## 5. Using the files
