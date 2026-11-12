@@ -64,6 +64,10 @@ h1,
   line-height: 1.15;
 }
 
+.layout--single article .page__title {
+  font-size: clamp(2rem, 3.6vw, 3.125rem);
+}
+
 h2,
 .archive__subtitle,
 .archive__item-title {
